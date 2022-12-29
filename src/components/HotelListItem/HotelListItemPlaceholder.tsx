@@ -8,10 +8,6 @@ import {
 } from 'react-native';
 import SkeletonContent from 'react-native-skeleton-content-nonexpo';
 
-type HotelListItemPlaceholderProps = {
-  isLoading: boolean;
-};
-
 type SingleHotelListItemPlaceholderProps = {
   isLoading: boolean;
   style: StyleProp<ViewStyle>;
@@ -36,20 +32,28 @@ const SingleHotelListItemPlaceholder = ({
   </View>
 );
 
+type HotelListItemPlaceholderProps = Pick<
+  SingleHotelListItemPlaceholderProps,
+  'isLoading'
+>;
+
+const PLACEHOLDER_ITEMS = [
+  SingleHotelListItemPlaceholder,
+  SingleHotelListItemPlaceholder,
+];
+
 const HotelListItemPlaceholder = ({
   isLoading,
 }: HotelListItemPlaceholderProps) => (
   <ScrollView>
-    {[SingleHotelListItemPlaceholder, SingleHotelListItemPlaceholder].map(
-      (Placeholder, index) => (
-        <Placeholder
-          // eslint-disable-next-line react/no-array-index-key
-          key={`${index}`}
-          isLoading={isLoading}
-          style={index === 0 ? { margin: 16 } : { marginBottom: 16 }}
-        />
-      ),
-    )}
+    {PLACEHOLDER_ITEMS.map((Placeholder, index) => (
+      <Placeholder
+        // eslint-disable-next-line react/no-array-index-key
+        key={`${index}`}
+        isLoading={isLoading}
+        style={index === 0 ? { margin: 16 } : { marginBottom: 16 }}
+      />
+    ))}
   </ScrollView>
 );
 
