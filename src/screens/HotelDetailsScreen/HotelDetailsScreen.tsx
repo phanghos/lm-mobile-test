@@ -22,7 +22,11 @@ const HotelDetailsScreen = () => {
         rating={userRating}
         gallery={gallery}
       />
-      <CheckHours checkIn={checkIn} checkOut={checkOut} />
+      <CheckHours
+        checkIn={checkIn}
+        checkOut={checkOut}
+        style={gallery.length === 1 && { marginTop: 16 }}
+      />
     </View>
   );
 };

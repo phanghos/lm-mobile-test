@@ -24,8 +24,9 @@ const HotelListItem = (props: HotelListItemProps) => {
           stars={stars}
           rating={userRating}
           gallery={gallery}
+          onImagePress={goToHotelDetails}
         />
-        <Text style={styles.price}>
+        <Text style={[styles.price, gallery.length === 1 && { marginTop: 16 }]}>
           {formatPrice({ amount: price, currency })}
         </Text>
       </View>

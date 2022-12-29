@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ViewProps } from 'react-native';
 import { Hotel } from 'types';
 
-type CheckHoursProps = Pick<Hotel, 'checkIn' | 'checkOut'>;
+type CheckHoursProps = Pick<Hotel, 'checkIn' | 'checkOut'> &
+  Pick<ViewProps, 'style'>;
 
-const CheckHours = ({ checkIn, checkOut }: CheckHoursProps) => (
-  <View style={styles.container}>
+const CheckHours = ({ checkIn, checkOut, style }: CheckHoursProps) => (
+  <View style={[styles.container, style]}>
     <Text style={styles.checkInContainer}>
       <Text style={styles.checkHoursTitle}>Check-in:</Text>
       <Text

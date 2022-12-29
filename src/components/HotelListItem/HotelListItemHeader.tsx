@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Dimensions,
   ListRenderItem,
   StyleSheet,
   Text,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import Carousel from 'react-native-snap-carousel';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 import type { Hotel } from 'types';
 import { formatAddress } from 'utils/formatters';
 import HotelStars from 'components/HotelStars/HotelStars';
@@ -18,13 +19,23 @@ type HotelListItemHeaderProps = {
   stars: number;
   rating: number;
   gallery: string[];
+  onImagePress?: () => void;
 };
 
 const { width } = Dimensions.get('screen');
 
-const renderCarouselItem: ListRenderItem<string> = ({ item }) => (
-  <HotelImage uri={item} />
-);
+const renderCarouselItem: (
+  onImagePress: HotelListItemHeaderProps['onImagePress'],
+) => ListRenderItem<string> =
+  onImagePress =>
+  ({ item }) =>
+    (
+      <TouchableWithoutFeedback onPress={onImagePress}>
+        <View onStartShouldSetResponder={() => false}>
+          <HotelImage uri={item} />
+        </View>
+      </TouchableWithoutFeedback>
+    );
 
 const SLIDER_WIDTH = width - 64;
 
@@ -36,24 +47,38 @@ const HotelListItemHeader = ({
   stars,
   rating,
   gallery,
-}: HotelListItemHeaderProps) => (
-  <View>
-    <Text style={styles.hotelName}>{title}</Text>
-    <Text style={styles.hotelAddress}>{formatAddress(location)}</Text>
-    <View style={styles.starsAndRatingContainer}>
-      <HotelStars count={stars} />
-      <View style={styles.userRatingContainer}>
-        <Text style={styles.userRating}>{rating}</Text>
+  onImagePress,
+}: HotelListItemHeaderProps) => {
+  const [carouselIndex, setCarouselIndex] = useState(0);
+
+  return (
+    <View>
+      <Text style={styles.hotelName}>{title}</Text>
+      <Text style={styles.hotelAddress}>{formatAddress(location)}</Text>
+      <View style={styles.starsAndRatingContainer}>
+        <HotelStars count={stars} />
+        <View style={styles.userRatingContainer}>
+          <Text style={styles.userRating}>{rating}</Text>
+        </View>
       </View>
+      <Carousel
+        data={gallery}
+        renderItem={renderCarouselItem(onImagePress)}
+        sliderWidth={SLIDER_WIDTH}
+        itemWidth={ITEM_WIDTH}
+        onSnapToItem={setCarouselIndex}
+      />
+      <Pagination
+        dotsLength={gallery.length}
+        activeDotIndex={carouselIndex}
+        dotContainerStyle={{ height: 0 }}
+        dotStyle={{ width: 10, height: 10, borderRadius: 5 }}
+        inactiveDotOpacity={0.5}
+        inactiveDotScale={0.5}
+      />
     </View>
-    <Carousel
-      data={gallery}
-      renderItem={renderCarouselItem}
-      sliderWidth={SLIDER_WIDTH}
-      itemWidth={ITEM_WIDTH}
-    />
-  </View>
-);
+  );
+};
 
 export default HotelListItemHeader;
 

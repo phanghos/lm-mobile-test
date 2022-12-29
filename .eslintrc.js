@@ -45,6 +45,8 @@ module.exports = {
     'arrow-body-style': [1, 'as-needed'],
 
     // React
+    'react/prop-types': 0,
+    'react/display-name': 0,
     'react/jsx-key': 2,
     'react/jsx-boolean-value': 1,
     'react/boolean-prop-naming': 1,
