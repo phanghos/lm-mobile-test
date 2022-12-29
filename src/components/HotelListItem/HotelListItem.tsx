@@ -15,6 +15,7 @@ import {
   formatAddress as formatHotelAddress,
   formatCurrency,
 } from 'utils/formatters';
+import HotelStars from 'components/HotelStars/HotelStars';
 import HotelImage from './HotelImage';
 
 type HotelListItemProps = Hotel;
@@ -30,7 +31,7 @@ const SLIDER_WIDTH = width - 64;
 const ITEM_WIDTH = width * 0.8;
 
 const HotelListItem = (props: HotelListItemProps) => {
-  const { name, location, userRating, gallery, price } = props;
+  const { name, location, stars, userRating, gallery, price } = props;
 
   const { navigate } = useNavigation();
 
@@ -42,6 +43,7 @@ const HotelListItem = (props: HotelListItemProps) => {
         <Text style={styles.hotelName}>{name}</Text>
         <Text style={styles.hotelAddress}>{formatHotelAddress(location)}</Text>
         <View style={styles.starsAndRatingContainer}>
+          <HotelStars count={stars} />
           <View style={styles.userRatingContainer}>
             <Text style={styles.userRating}>{userRating}</Text>
           </View>
