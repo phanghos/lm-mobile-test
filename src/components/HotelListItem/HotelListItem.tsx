@@ -13,7 +13,7 @@ import type { Hotel } from 'types';
 import { Screen } from 'screens';
 import {
   formatAddress as formatHotelAddress,
-  formatCurrency,
+  formatPrice,
 } from 'utils/formatters';
 import HotelStars from 'components/HotelStars/HotelStars';
 import HotelImage from './HotelImage';
@@ -31,7 +31,7 @@ const SLIDER_WIDTH = width - 64;
 const ITEM_WIDTH = width * 0.8;
 
 const HotelListItem = (props: HotelListItemProps) => {
-  const { name, location, stars, userRating, gallery, price } = props;
+  const { name, location, stars, userRating, gallery, price, currency } = props;
 
   const { navigate } = useNavigation();
 
@@ -56,7 +56,9 @@ const HotelListItem = (props: HotelListItemProps) => {
             itemWidth={ITEM_WIDTH}
           />
         )}
-        <Text style={styles.price}>{formatCurrency(price)}</Text>
+        <Text style={styles.price}>
+          {formatPrice({ amount: price, currency })}
+        </Text>
       </View>
     </TouchableOpacity>
   );

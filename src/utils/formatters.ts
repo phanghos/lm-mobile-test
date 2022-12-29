@@ -1,10 +1,16 @@
-import numbro from 'numbro';
 import { Hotel } from 'types';
 
-export const formatCurrency = (amount: number) =>
-  numbro(amount).formatCurrency({
-    currencyPosition: 'prefix',
-  });
+const currencyMap: Record<string, string> = {
+  EUR: '€',
+};
+
+type FormatPriceParams = {
+  amount: number;
+  currency: string;
+};
+
+export const formatPrice = ({ amount, currency }: FormatPriceParams) =>
+  `${currencyMap[currency] ?? ''}${amount}`;
 
 export const formatAddress = ({ address, city }: Hotel['location']) =>
   `${address}, ${city}`;
