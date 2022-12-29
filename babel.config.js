@@ -8,5 +8,6 @@ module.exports = {
         extensions: ['.js', '.jsx', '.ts', '.tsx', '.json', '.svg'],
       },
     ],
+    'react-native-reanimated/plugin',
   ],
 };

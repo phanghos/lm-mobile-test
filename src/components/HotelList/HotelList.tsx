@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  ActivityIndicator,
   FlatList,
   Insets,
   ListRenderItem,
@@ -10,6 +9,7 @@ import {
 import type { Hotel } from 'types';
 import useFetchHotels from 'hooks/useFetchHotels';
 import HotelListItem from 'components/HotelListItem/HotelListItem';
+import HotelListItemPlaceholder from 'components/HotelListItem/HotelListItemPlaceholder';
 
 const renderItem: ListRenderItem<Hotel> = ({ item }) => (
   <HotelListItem {...item} />
@@ -26,7 +26,7 @@ const HotelList = () => {
 
   return (
     <View style={styles.container}>
-      {isLoading && <ActivityIndicator size={'large'} />}
+      {isLoading && <HotelListItemPlaceholder isLoading={isLoading} />}
       {!!hotels.length && (
         <FlatList
           data={hotels}
