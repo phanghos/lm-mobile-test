@@ -1,9 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useAppStore from 'store';
 import {
+  areFilterConfigsEqual,
   getFilterValue,
   getNewFilteredConfig,
   numberFilter,
@@ -13,23 +20,57 @@ import useFilterHotels from 'hooks/useFilterHotels';
 import HotelStars from 'components/HotelStars/HotelStars';
 import Button from 'components/Button/Button';
 import FilterItem from './FilterItem';
-import { FilterConfig } from './types';
 
 const Filters = () => {
-  const { goBack } = useNavigation();
+  const { goBack, setOptions } = useNavigation();
   const { bottom } = useSafeAreaInsets();
 
   const filters = useAppStore(state => state.filters);
   const setFilters = useAppStore(state => state.setFilters);
-  const removeFilter = useAppStore(state => state.removeFilter);
   const hotels = useAppStore(state => state.hotels);
 
-  const [localFilters, setLocalFilters] = useState<FilterConfig>(filters);
+  const [localFilters, setLocalFilters] = useState(filters);
   const [name, setName] = useState(getFilterValue('name', filters) || '');
   const [stars, setStars] = useState(getFilterValue('stars', filters) || 0);
 
-  const preFilteredResults = useFilterHotels(hotels, localFilters);
+  const localFiltersFiltered = useMemo(
+    () => getNewFilteredConfig(localFilters),
+    [localFilters],
+  );
+
+  const areOldAndNewFiltersEqual = useMemo(
+    () => areFilterConfigsEqual(filters, localFiltersFiltered),
+    [filters, localFiltersFiltered],
+  );
+
+  const preFilteredResults = useFilterHotels(hotels, localFiltersFiltered);
   const preFilteredResultsCount = preFilteredResults.length;
+
+  const onApplyFilters = () => {
+    setFilters(localFiltersFiltered);
+    goBack();
+  };
+
+  const onResetHotelNameFilter = () => setName('');
+
+  const onResetStarFilter = () => setStars(0);
+
+  const onResetAllFilters = useCallback(() => {
+    onResetHotelNameFilter();
+    onResetStarFilter();
+  }, []);
+
+  useEffect(() => {
+    setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={onResetAllFilters}
+          style={styles.headerContainer}>
+          <Text style={styles.headerText}>Reset all</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [setOptions, onResetAllFilters]);
 
   useEffect(() => {
     setLocalFilters(filters);
@@ -41,15 +82,6 @@ const Filters = () => {
       stars: numberFilter(stars),
     });
   }, [name, stars]);
-
-  const onApplyFilters = () => {
-    setFilters(getNewFilteredConfig(localFilters));
-    goBack();
-  };
-
-  const onResetHotelNameFilter = () => removeFilter('name');
-
-  const onResetStarFilter = () => removeFilter('stars');
 
   return (
     <>
@@ -73,7 +105,7 @@ const Filters = () => {
         text={`Apply (${preFilteredResultsCount})`}
         onPress={onApplyFilters}
         variant="fullWidth"
-        disabled={!preFilteredResultsCount}
+        disabled={!preFilteredResultsCount || areOldAndNewFiltersEqual}
         style={{ marginBottom: bottom }}
       />
     </>
@@ -83,6 +115,8 @@ const Filters = () => {
 export default Filters;
 
 const styles = StyleSheet.create({
+  headerContainer: { marginRight: 16 },
+  headerText: { color: 'white', fontWeight: '600' },
   filtersContainer: { flex: 1 },
   textInput: { fontSize: 16 },
 });

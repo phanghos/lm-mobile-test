@@ -38,7 +38,7 @@ export const filterHotel =
     return false;
   };
 
-export const filterOutInactiveFilters = ([_, val]: FilterEntry): boolean => {
+const filterOutInactiveFilters = ([_, val]: FilterEntry): boolean => {
   const value = val.value;
 
   if (isString(value)) return !!value.trim();
@@ -52,7 +52,7 @@ export const getNewFilteredConfig = (filters: FilterConfig): FilterConfig =>
     .filter(filterOutInactiveFilters)
     .reduce<FilterConfig>((acc, [key, val]) => ({ ...acc, [key]: val }), {});
 
-type FilterValueMap = {
+type FilterKeyValueTypeMap = {
   name: string;
   stars: number;
   price: [number, number];
@@ -61,4 +61,18 @@ type FilterValueMap = {
 export const getFilterValue = <K extends FilterableKey>(
   name: K,
   filters: FilterConfig,
-) => filters[name]?.value as FilterValueMap[K];
+) => filters[name]?.value as FilterKeyValueTypeMap[K];
+
+export const areFilterValuesEqual = (f1: FilterType, f2: FilterType) =>
+  typeof f1 === typeof f2 && f1.value === f2.value;
+
+export const areFilterConfigsEqual = (f1: FilterConfig, f2: FilterConfig) => {
+  const f1Entries = Object.entries(f1) as FilterEntry[];
+  const f2Entries = Object.entries(f2) as FilterEntry[];
+
+  if (f1Entries.length !== f2Entries.length) return false;
+
+  return f1Entries.every(([, val], index) =>
+    areFilterValuesEqual(val, f2Entries[index][1]),
+  );
+};
