@@ -1,26 +1,27 @@
 import create from 'zustand';
 import type { Hotel } from 'types';
-import type { FilterType } from 'components/Filters/types';
+import type { FilterableKey, FilterConfig } from 'components/Filters/types';
 
 type StoreState = {
-  filters: Record<string, FilterType>;
-  addFilter: (filter: FilterType, name: keyof Hotel) => void;
-  removeFilter: (name: keyof Hotel) => void;
+  hotels: Hotel[];
+  filters: FilterConfig;
+  setHotels: (hotels: Hotel[]) => void;
+  setFilters: (filters: FilterConfig) => void;
+  removeFilter: (name: FilterableKey) => void;
   resetFilters: () => void;
 };
 
 const useAppStore = create<StoreState>(set => ({
+  hotels: [],
   filters: {},
-  addFilter: (filter, name) =>
-    set(({ filters }) => ({ filters: { ...filters, [name]: filter } })),
+  setHotels: hotels => set(state => ({ ...state, hotels })),
+  setFilters: filters => set(state => ({ ...state, filters })),
   removeFilter: name =>
-    set(state => {
-      // eslint-disable-next-line curly
-      if (!state.filters[name]) return state;
-      const { [name]: _, ...restFilters } = state.filters;
-      return { filters: restFilters };
+    set(({ filters, ...restState }) => {
+      const { [name]: _, ...restFilters } = filters;
+      return { ...restState, filters: restFilters };
     }),
-  resetFilters: () => set(_ => ({ filters: {} })),
+  resetFilters: () => set(state => ({ ...state, filters: {} })),
 }));
 
 export default useAppStore;

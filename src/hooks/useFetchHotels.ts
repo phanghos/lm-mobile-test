@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import type { Hotel, HotelResponse } from 'types';
+import useAppStore from 'store';
+import type { HotelResponse } from 'types';
 
 const useFetchHotels = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [hotels, setHotels] = useState<Hotel[]>([]);
   const [hasError, setHasError] = useState(false);
+  const hotels = useAppStore(state => state.hotels);
+  const setHotels = useAppStore(state => state.setHotels);
 
   const getHotels = useCallback(async () => {
     setHasError(false);
@@ -24,7 +26,7 @@ const useFetchHotels = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [setHotels]);
 
   useEffect(() => {
     getHotels();

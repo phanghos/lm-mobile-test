@@ -3,52 +3,77 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useAppStore from 'store';
+import { getNewFilteredConfig, numberFilter, textFilter } from 'utils/filters';
+import useFilterHotels from 'hooks/useFilterHotels';
 import HotelStars from 'components/HotelStars/HotelStars';
-import FilterItem from './FilterItem';
-import { numberFilter, textFilter } from 'utils/filters';
 import Button from 'components/Button/Button';
+import FilterItem from './FilterItem';
+import { FilterConfig } from './types';
 
 const Filters = () => {
   const { goBack } = useNavigation();
   const { bottom } = useSafeAreaInsets();
 
   const filters = useAppStore(state => state.filters);
-  const addFilter = useAppStore(state => state.addFilter);
+  const setFilters = useAppStore(state => state.setFilters);
+  const removeFilter = useAppStore(state => state.removeFilter);
+  const hotels = useAppStore(state => state.hotels);
 
-  const [name, setName] = useState<string>();
-  const [starsCount, setStarsCount] = useState<number>();
+  const [localFilters, setLocalFilters] = useState<FilterConfig>(filters);
+  const [name, setName] = useState((filters.name?.value as string) || '');
+  const [stars, setStars] = useState((filters.stars?.value as number) || 0);
+
+  const preFilteredResults = useFilterHotels(hotels, localFilters);
+  const preFilteredResultsCount = preFilteredResults.length;
+
+  // const mounted = useRef(false);
 
   useEffect(() => {
-    setName(filters.name?.value as string);
-    setStarsCount(filters.stars?.value as number);
-  }, [filters.name, filters.stars]);
+    setLocalFilters(filters);
+  }, [filters]);
+
+  useEffect(() => {
+    // if (!mounted.current) {
+    //   mounted.current = true;
+    //   return;
+    // }
+
+    setLocalFilters({
+      name: textFilter(name),
+      stars: numberFilter(stars),
+    });
+  }, [name, stars]);
 
   const onApplyFilters = () => {
-    !!name && addFilter(textFilter(name), 'name');
-    !!starsCount && addFilter(numberFilter(starsCount), 'stars');
-
+    setFilters(getNewFilteredConfig(localFilters));
     goBack();
   };
+
+  const onResetStarFilter = () => removeFilter('stars');
 
   return (
     <>
       <View style={styles.filtersContainer}>
-        <FilterItem title={'Name'}>
+        <FilterItem title="Name">
           <TextInput
-            value={name}
+            value={(localFilters.name?.value as string) || ''}
             placeholder="Property name"
             onChangeText={setName}
             style={styles.textInput}
           />
         </FilterItem>
-        <FilterItem title="Stars">
-          <HotelStars count={starsCount || 0} onStarPress={setStarsCount} />
+        <FilterItem title="Stars" canReset onResetPress={onResetStarFilter}>
+          <HotelStars
+            count={(localFilters.stars?.value as number) || 0}
+            onStarPress={setStars}
+          />
         </FilterItem>
       </View>
       <Button
-        text="Apply"
+        text={`Apply (${preFilteredResultsCount})`}
         onPress={onApplyFilters}
         variant="fullWidth"
+        disabled={!preFilteredResultsCount}
         style={{ marginBottom: bottom }}
       />
     </>

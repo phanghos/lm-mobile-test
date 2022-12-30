@@ -10,4 +10,6 @@ export type RangeFilter = FilterValue<[number, number]>;
 
 export type FilterType = TextFilter | NumberFilter | RangeFilter;
 
+export type FilterConfig = Partial<Record<FilterableKey, FilterType>>;
+
 export type FilterEntry = [FilterableKey, FilterType];

@@ -1,4 +1,4 @@
-export interface Hotel {
+export type Hotel = {
   id: number;
   name: string;
   location: {
@@ -18,6 +18,6 @@ export interface Hotel {
   userRating: number;
   price: number;
   currency: string;
-}
+};
 
 export type HotelResponse = Hotel[];

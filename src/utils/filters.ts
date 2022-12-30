@@ -1,5 +1,8 @@
+/* eslint-disable curly */
 import type {
   FilterableKey,
+  FilterConfig,
+  FilterEntry,
   FilterType,
   NumberFilter,
   RangeFilter,
@@ -20,15 +23,12 @@ export const filterHotel =
   ([key, filter]: [string, FilterType]) => {
     const value = hotel[key as FilterableKey];
 
-    // eslint-disable-next-line curly
     if (value === undefined) return false;
 
-    if (typeof filter.value === 'string') {
-      return `${value}`
-        .toLocaleLowerCase()
-        .includes(filter.value.toLowerCase());
-    } else if (typeof filter.value === 'number') {
-      return +value === filter.value;
+    if (typeof value === 'string' && typeof filter.value === 'string') {
+      return value.toLocaleLowerCase().includes(filter.value.toLowerCase());
+    } else if (typeof value === 'number' && typeof filter.value === 'number') {
+      return value === filter.value;
     } else if (typeof filter.value === 'object') {
       const [min, max] = filter.value;
       return +value >= min && +value <= max;
@@ -36,3 +36,16 @@ export const filterHotel =
 
     return false;
   };
+
+export const filterOutInactiveFilters = ([_, val]: FilterEntry) => {
+  const value = val.value;
+
+  if (typeof value === 'string') return !!value.trim();
+  else if (typeof value === 'number') return !!value;
+  else return false;
+};
+
+export const getNewFilteredConfig = (filters: FilterConfig) =>
+  (Object.entries(filters) as FilterEntry[])
+    .filter(filterOutInactiveFilters)
+    .reduce((acc, [key, val]) => ({ ...acc, [key]: val }), {});

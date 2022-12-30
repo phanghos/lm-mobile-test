@@ -1,19 +1,36 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, ViewProps } from 'react-native';
+import {
+  ButtonProps as RNButtonProps,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ViewProps,
+} from 'react-native';
 import { Colors } from 'colors';
 
 type ButtonProps = {
   text: string;
   onPress: () => void;
   variant?: 'regular' | 'fullWidth';
-} & Pick<ViewProps, 'style'>;
+} & Pick<ViewProps, 'style'> &
+  Pick<RNButtonProps, 'disabled'>;
 
-const Button = ({ text, onPress, variant = 'regular', style }: ButtonProps) => (
+const DISABLED_OPACITY = 0.5;
+
+const Button = ({
+  text,
+  onPress,
+  variant = 'regular',
+  disabled,
+  style,
+}: ButtonProps) => (
   <TouchableOpacity
     onPress={onPress}
+    disabled={disabled}
     style={[
       styles.buttonContainer,
       variant === 'fullWidth' && { width: '100%' },
+      disabled && { opacity: DISABLED_OPACITY },
       style,
     ]}>
     <Text style={styles.buttonText}>{text}</Text>
