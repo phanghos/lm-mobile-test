@@ -62,7 +62,7 @@ const Filters = () => {
         </FilterItem>
         <FilterItem title="Stars" canReset onResetPress={onResetStarFilter}>
           <HotelStars
-            count={getFilterValue('stars', filters) || 0}
+            count={getFilterValue('stars', localFilters) || 0}
             onStarPress={setStars}
           />
         </FilterItem>
