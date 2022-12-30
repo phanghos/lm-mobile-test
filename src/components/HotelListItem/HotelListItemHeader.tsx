@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
+    marginLeft: 8,
   },
   userRating: { color: 'white', fontWeight: '600' },
   paginationDotContainer: { height: 0 },

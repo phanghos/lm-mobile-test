@@ -15,8 +15,8 @@ const SingleHotelListItemPlaceholder = ({
       containerStyle={styles.placeholderContainer}
       isLoading={isLoading}
       layout={[
-        { key: 'hotelName', width: '50%', height: 20, marginBottom: 8 },
-        { key: 'hotelAddress', width: '70%', height: 20, marginBottom: 16 },
+        { key: 'hotelName', width: '80%', height: 20, marginBottom: 8 },
+        { key: 'hotelAddress', width: '60%', height: 20, marginBottom: 16 },
         { key: 'stars', width: '40%', height: 30, marginBottom: 16 },
         { key: 'gallery', width: '100%', height: 200, marginBottom: 16 },
         { key: 'price', width: '20%', height: 20 },
