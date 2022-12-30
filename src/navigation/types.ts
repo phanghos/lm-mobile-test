@@ -3,6 +3,7 @@ import type { Hotel } from 'types';
 export type RootStackParamList = {
   HOTEL_LIST_SCREEN: undefined;
   HOTEL_DETAILS_SCREEN: Hotel;
+  FILTER_SCREEN: undefined;
 };
 
 declare global {
