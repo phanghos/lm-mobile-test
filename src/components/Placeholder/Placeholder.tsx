@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import Button from 'components/Button/Button';
 
 type CommonProps = {
   title: string;
@@ -24,28 +25,17 @@ const Placeholder = ({
   buttonText,
   onButtonPress,
 }: PlaceholderProps) => (
-  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+  <View style={styles.container}>
     <Text style={styles.title}>{title}</Text>
     <Text style={styles.subtitle}>{subtitle}</Text>
-    {!!buttonText && (
-      <TouchableOpacity onPress={onButtonPress} style={styles.buttonContainer}>
-        <Text style={styles.buttonText}>{buttonText}</Text>
-      </TouchableOpacity>
-    )}
+    {!!buttonText && <Button text={buttonText} onPress={onButtonPress} />}
   </View>
 );
 
 export default Placeholder;
 
 const styles = StyleSheet.create({
+  container: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   title: { fontSize: 20, fontWeight: '700', marginBottom: 8 },
   subtitle: { fontSize: 16, marginBottom: 16 },
-  buttonContainer: {
-    padding: 12,
-    backgroundColor: '#D8315B',
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonText: { color: 'white', fontSize: 16, fontWeight: '600' },
 });
