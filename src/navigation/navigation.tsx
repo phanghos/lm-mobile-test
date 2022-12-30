@@ -9,6 +9,7 @@ import { Screen } from 'screens';
 import HotelList from 'components/HotelList/HotelList';
 import HotelDetailsScreen from 'screens/HotelDetailsScreen/HotelDetailsScreen';
 import FilterScreen from 'screens/FilterScreen/FilterScreen';
+import HeaderFilterButton from 'components/HeaderFilterButton/HeaderFilterButton';
 
 const AppStack = createStackNavigator<RootStackParamList>();
 
@@ -21,7 +22,15 @@ const AppNavigator = () => (
         <HeaderBackButton tintColor="white" onPress={navigation.goBack} />
       ),
     })}>
-    <AppStack.Screen name={Screen.HotelList} component={HotelList} />
+    <AppStack.Screen
+      name={Screen.HotelList}
+      component={HotelList}
+      options={{
+        headerTitle: 'Hotel List',
+        headerRightContainerStyle: { width: '100%' },
+        headerRight: HeaderFilterButton,
+      }}
+    />
     <AppStack.Screen
       name={Screen.HotelDetails}
       component={HotelDetailsScreen}
