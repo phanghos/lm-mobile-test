@@ -3,7 +3,12 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useAppStore from 'store';
-import { getNewFilteredConfig, numberFilter, textFilter } from 'utils/filters';
+import {
+  getFilterValue,
+  getNewFilteredConfig,
+  numberFilter,
+  textFilter,
+} from 'utils/filters';
 import useFilterHotels from 'hooks/useFilterHotels';
 import HotelStars from 'components/HotelStars/HotelStars';
 import Button from 'components/Button/Button';
@@ -20,24 +25,17 @@ const Filters = () => {
   const hotels = useAppStore(state => state.hotels);
 
   const [localFilters, setLocalFilters] = useState<FilterConfig>(filters);
-  const [name, setName] = useState((filters.name?.value as string) || '');
-  const [stars, setStars] = useState((filters.stars?.value as number) || 0);
+  const [name, setName] = useState(getFilterValue('name', filters) || '');
+  const [stars, setStars] = useState(getFilterValue('stars', filters) || 0);
 
   const preFilteredResults = useFilterHotels(hotels, localFilters);
   const preFilteredResultsCount = preFilteredResults.length;
-
-  // const mounted = useRef(false);
 
   useEffect(() => {
     setLocalFilters(filters);
   }, [filters]);
 
   useEffect(() => {
-    // if (!mounted.current) {
-    //   mounted.current = true;
-    //   return;
-    // }
-
     setLocalFilters({
       name: textFilter(name),
       stars: numberFilter(stars),
@@ -56,7 +54,7 @@ const Filters = () => {
       <View style={styles.filtersContainer}>
         <FilterItem title="Name">
           <TextInput
-            value={(localFilters.name?.value as string) || ''}
+            value={getFilterValue('name', localFilters) || ''}
             placeholder="Property name"
             onChangeText={setName}
             style={styles.textInput}
@@ -64,7 +62,7 @@ const Filters = () => {
         </FilterItem>
         <FilterItem title="Stars" canReset onResetPress={onResetStarFilter}>
           <HotelStars
-            count={(localFilters.stars?.value as number) || 0}
+            count={getFilterValue('stars', filters) || 0}
             onStarPress={setStars}
           />
         </FilterItem>

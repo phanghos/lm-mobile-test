@@ -1,5 +1,7 @@
 /* eslint-disable curly */
+import { isString, isNumber, isObject } from 'radash';
 import type {
+  FilterableKey,
   FilterConfig,
   FilterEntry,
   FilterType,
@@ -24,27 +26,39 @@ export const filterHotel =
 
     if (value === undefined) return false;
 
-    if (typeof value === 'string' && typeof filter.value === 'string') {
+    if (isString(value) && isString(filter.value)) {
       return value.toLocaleLowerCase().includes(filter.value.toLowerCase());
-    } else if (typeof value === 'number' && typeof filter.value === 'number') {
+    } else if (isNumber(value) && isNumber(filter.value)) {
       return value === filter.value;
-    } else if (typeof filter.value === 'object') {
+    } else if (isNumber(value) && isObject(filter.value)) {
       const [min, max] = filter.value;
-      return +value >= min && +value <= max;
+      return value >= min && value <= max;
     }
 
     return false;
   };
 
-export const filterOutInactiveFilters = ([_, val]: FilterEntry) => {
+export const filterOutInactiveFilters = ([_, val]: FilterEntry): boolean => {
   const value = val.value;
 
-  if (typeof value === 'string') return !!value.trim();
-  else if (typeof value === 'number') return !!value;
-  else return false;
+  if (isString(value)) return !!value.trim();
+  else if (isNumber(value)) return !!value;
+
+  return false;
 };
 
-export const getNewFilteredConfig = (filters: FilterConfig) =>
+export const getNewFilteredConfig = (filters: FilterConfig): FilterConfig =>
   (Object.entries(filters) as FilterEntry[])
     .filter(filterOutInactiveFilters)
-    .reduce((acc, [key, val]) => ({ ...acc, [key]: val }), {});
+    .reduce<FilterConfig>((acc, [key, val]) => ({ ...acc, [key]: val }), {});
+
+type FilterValueMap = {
+  name: string;
+  stars: number;
+  price: [number, number];
+};
+
+export const getFilterValue = <K extends FilterableKey>(
+  name: K,
+  filters: FilterConfig,
+) => filters[name]?.value as FilterValueMap[K];
