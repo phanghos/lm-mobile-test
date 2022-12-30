@@ -47,12 +47,14 @@ const Filters = () => {
     goBack();
   };
 
+  const onResetHotelNameFilter = () => removeFilter('name');
+
   const onResetStarFilter = () => removeFilter('stars');
 
   return (
     <>
       <View style={styles.filtersContainer}>
-        <FilterItem title="Name">
+        <FilterItem title="Name" canReset onResetPress={onResetHotelNameFilter}>
           <TextInput
             value={getFilterValue('name', localFilters) || ''}
             placeholder="Property name"
