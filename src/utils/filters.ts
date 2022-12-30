@@ -1,6 +1,5 @@
 /* eslint-disable curly */
 import type {
-  FilterableKey,
   FilterConfig,
   FilterEntry,
   FilterType,
@@ -20,8 +19,8 @@ export const rangeFilter = createFilterFunction<RangeFilter>();
 
 export const filterHotel =
   (hotel: Hotel) =>
-  ([key, filter]: [string, FilterType]) => {
-    const value = hotel[key as FilterableKey];
+  ([key, filter]: FilterEntry) => {
+    const value = hotel[key];
 
     if (value === undefined) return false;
 

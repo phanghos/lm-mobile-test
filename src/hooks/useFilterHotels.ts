@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import useAppStore from 'store';
 import type { Hotel } from 'types';
-import type { FilterConfig } from 'components/Filters/types';
+import type { FilterConfig, FilterEntry } from 'components/Filters/types';
 import { filterHotel } from 'utils/filters';
 
 const useFilterHotels = (hotels: Hotel[], filters?: FilterConfig) => {
@@ -10,7 +10,9 @@ const useFilterHotels = (hotels: Hotel[], filters?: FilterConfig) => {
   return useMemo(
     () =>
       hotels.filter(hotel =>
-        Object.entries(filters || filtersInStore).every(filterHotel(hotel)),
+        (Object.entries(filters || filtersInStore) as FilterEntry[]).every(
+          filterHotel(hotel),
+        ),
       ),
     [hotels, filters, filtersInStore],
   );
