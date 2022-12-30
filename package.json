@@ -8,6 +8,7 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
+    "tsc": "tsc --noEmit",
     "postinstall": "patch-package"
   },
   "dependencies": {
@@ -24,7 +25,8 @@
     "react-native-screens": "^3.18.2",
     "react-native-skeleton-content-nonexpo": "^1.0.13",
     "react-native-snap-carousel": "^3.9.1",
-    "react-native-svg": "^13.6.0"
+    "react-native-svg": "^13.6.0",
+    "zustand": "^4.1.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
