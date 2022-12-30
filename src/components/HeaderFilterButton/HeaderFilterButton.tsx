@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Screen } from 'screens';
+import { Colors } from 'colors';
 import useAppStore from 'store';
 import FilterIcon from '../../../assets/icons/filter.svg';
 
@@ -39,5 +40,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  labelText: { color: '#D8315B', fontWeight: '700' },
+  labelText: { color: Colors.primary, fontWeight: '700' },
 });

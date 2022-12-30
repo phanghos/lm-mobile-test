@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { Hotel } from 'types';
 import { Screen } from 'screens';
+import { Colors } from 'colors';
 import { formatPrice } from 'utils/formatters';
 import HotelListItemHeader from './HotelListItemHeader';
 
@@ -38,5 +39,5 @@ export default HotelListItem;
 
 const styles = StyleSheet.create({
   container: { padding: 16, backgroundColor: 'white', borderRadius: 8 },
-  price: { fontSize: 20, color: '#D8315B', fontWeight: '700' },
+  price: { fontSize: 20, color: Colors.primary, fontWeight: '700' },
 });

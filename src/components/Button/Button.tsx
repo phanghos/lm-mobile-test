@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, ViewProps } from 'react-native';
+import { Colors } from 'colors';
 
 type ButtonProps = {
   text: string;
@@ -24,7 +25,7 @@ export default Button;
 const styles = StyleSheet.create({
   buttonContainer: {
     padding: 12,
-    backgroundColor: '#D8315B',
+    backgroundColor: Colors.primary,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',

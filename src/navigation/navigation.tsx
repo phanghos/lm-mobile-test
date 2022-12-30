@@ -6,6 +6,7 @@ import {
 import { HeaderBackButton } from '@react-navigation/elements';
 import type { RootStackParamList } from './types';
 import { Screen } from 'screens';
+import { Colors } from 'colors';
 import HotelList from 'components/HotelList/HotelList';
 import HotelDetailsScreen from 'screens/HotelDetailsScreen/HotelDetailsScreen';
 import FilterScreen from 'screens/FilterScreen/FilterScreen';
@@ -16,7 +17,7 @@ const AppStack = createStackNavigator<RootStackParamList>();
 const AppNavigator = () => (
   <AppStack.Navigator
     screenOptions={({ navigation }) => ({
-      headerStyle: { backgroundColor: '#D8315B' },
+      headerStyle: { backgroundColor: Colors.primary },
       headerTitleStyle: { color: 'white' },
       headerBackImage: () => (
         <HeaderBackButton tintColor="white" onPress={navigation.goBack} />
