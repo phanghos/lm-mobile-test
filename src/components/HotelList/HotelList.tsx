@@ -9,6 +9,7 @@ import {
 import type { StackScreenProps } from '@react-navigation/stack';
 import type { RootStackParamList } from 'navigation/types';
 import type { Hotel } from 'types';
+import { Colors } from 'colors';
 import useFetchHotels from 'hooks/useFetchHotels';
 import useFilterHotels from 'hooks/useFilterHotels';
 import HotelListItem from 'components/HotelListItem/HotelListItem';
@@ -56,7 +57,7 @@ const HotelList = () => {
 export default HotelList;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F8F1FF' },
+  container: { flex: 1, backgroundColor: Colors.screenBackground },
   separator: { height: 8 },
   listContainer: { padding: 16 },
   listContainerEmpty: {

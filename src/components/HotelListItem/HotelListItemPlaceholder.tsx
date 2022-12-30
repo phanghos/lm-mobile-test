@@ -1,17 +1,10 @@
 import React from 'react';
-import {
-  ScrollView,
-  StyleProp,
-  StyleSheet,
-  View,
-  ViewStyle,
-} from 'react-native';
+import { ScrollView, StyleSheet, View, ViewProps } from 'react-native';
 import SkeletonContent from 'react-native-skeleton-content-nonexpo';
 
 type SingleHotelListItemPlaceholderProps = {
   isLoading: boolean;
-  style: StyleProp<ViewStyle>;
-};
+} & Pick<ViewProps, 'style'>;
 
 const SingleHotelListItemPlaceholder = ({
   isLoading,
@@ -51,7 +44,7 @@ const HotelListItemPlaceholder = ({
         // eslint-disable-next-line react/no-array-index-key
         key={`${index}`}
         isLoading={isLoading}
-        style={index === 0 ? { margin: 16 } : { marginBottom: 16 }}
+        style={index === 0 ? styles.firstItem : styles.lastItem}
       />
     ))}
   </ScrollView>
@@ -62,4 +55,6 @@ export default HotelListItemPlaceholder;
 const styles = StyleSheet.create({
   container: { backgroundColor: 'white', marginHorizontal: 16 },
   placeholderContainer: { width: '100%', padding: 16, borderRadius: 8 },
+  firstItem: { margin: 16 },
+  lastItem: { marginBottom: 16 },
 });

@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { StyleSheet, TextInput, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useAppStore from 'store';
 import HotelStars from 'components/HotelStars/HotelStars';
 import FilterItem from './FilterItem';
-import { numberFilter, rangeFilter, textFilter } from 'utils/filters';
+import { numberFilter, textFilter } from 'utils/filters';
 import Button from 'components/Button/Button';
 
 const Filters = () => {
-  const { goBack, setOptions } = useNavigation();
+  const { goBack } = useNavigation();
   const { bottom } = useSafeAreaInsets();
 
   const filters = useAppStore(state => state.filters);

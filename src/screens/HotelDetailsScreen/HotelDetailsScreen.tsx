@@ -2,8 +2,9 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
-import CheckHours from 'components/HotelListItem/CheckHours';
 import type { RootStackParamList } from 'navigation/types';
+import { Colors } from 'colors';
+import CheckHours from 'components/HotelListItem/CheckHours';
 import HotelListItemHeader from 'components/HotelListItem/HotelListItemHeader';
 
 type ScreenProps = StackScreenProps<RootStackParamList, 'HOTEL_DETAILS_SCREEN'>;
@@ -25,7 +26,7 @@ const HotelDetailsScreen = () => {
       <CheckHours
         checkIn={checkIn}
         checkOut={checkOut}
-        style={gallery.length === 1 && { marginTop: 16 }}
+        style={gallery.length === 1 && styles.checkHoursWithoutPagination}
       />
     </View>
   );
@@ -34,5 +35,6 @@ const HotelDetailsScreen = () => {
 export default HotelDetailsScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F8F1FF', padding: 16 },
+  container: { flex: 1, backgroundColor: Colors.screenBackground, padding: 16 },
+  checkHoursWithoutPagination: { marginTop: 16 },
 });

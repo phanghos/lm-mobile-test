@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import type { Hotel } from 'types';
+import { Colors } from 'colors';
 import { formatAddress } from 'utils/formatters';
 import HotelStars from 'components/HotelStars/HotelStars';
 import HotelImage from './HotelImage';
@@ -38,8 +39,9 @@ const renderCarouselItem: (
     );
 
 const SLIDER_WIDTH = width - 64;
-
 const ITEM_WIDTH = width * 0.8;
+const INACTIVE_DOT_OPACITY = 0.5;
+const INACTIVE_DOT_SCALE = 0.5;
 
 const HotelListItemHeader = ({
   title,
@@ -71,10 +73,10 @@ const HotelListItemHeader = ({
       <Pagination
         dotsLength={gallery.length}
         activeDotIndex={carouselIndex}
-        dotContainerStyle={{ height: 0 }}
-        dotStyle={{ width: 10, height: 10, borderRadius: 5 }}
-        inactiveDotOpacity={0.5}
-        inactiveDotScale={0.5}
+        dotContainerStyle={styles.paginationDotContainer}
+        dotStyle={styles.paginationDotStyle}
+        inactiveDotOpacity={INACTIVE_DOT_OPACITY}
+        inactiveDotScale={INACTIVE_DOT_SCALE}
       />
     </View>
   );
@@ -89,9 +91,11 @@ const styles = StyleSheet.create({
   userRatingContainer: {
     padding: 8,
     borderRadius: 8,
-    backgroundColor: '#D8315B',
+    backgroundColor: Colors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
   userRating: { color: 'white', fontWeight: '600' },
+  paginationDotContainer: { height: 0 },
+  paginationDotStyle: { width: 10, height: 10, borderRadius: 5 },
 });
