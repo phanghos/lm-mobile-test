@@ -26,7 +26,7 @@ That's it! Now, you can now run either `npm run ios` or `npm run android`. Enjoy
 
 ### Features I decided to implement
 
-- Empty placeholder displayed in case of empty filter search results
+- ~~Empty placeholder displayed in case of empty filter search results~~ No longer applies since the button to apply the filters will be disabled if it's detected that applying them would return 0 results
 - Error placeholder with the possiblity to retry and refetch the request in case of error when fetching the list of hotels displayed
 - Skeleton placeholder displayed when the request is in progress
 - Image carousel with the list of hotel images (with pagination for the ones that have 1+ image)
