@@ -17,12 +17,18 @@ import type {
 } from 'components/Filters/types';
 import type { Hotel } from 'types';
 
+type PickByType<T, U> = {
+  [P in keyof T as T[P] extends U ? P : never]: T[P];
+};
+
 type FilterKeyValueTypeMap = {
   name: string;
   stars: number;
   userRating: RangeFilterType;
   price: RangeFilterType;
 };
+
+type NumberKey = keyof PickByType<Pick<Hotel, FilterableKey>, number>;
 
 const createFilterFunction =
   <T extends FilterType>() =>
@@ -51,11 +57,11 @@ export const filterHotel =
     return false;
   };
 
-export const findMinValueInListByKey = (hotels: Hotel[], key: FilterableKey) =>
-  minFn(hotels, h => +h[key])?.[key];
+export const findMinValueInListByKey = (hotels: Hotel[], key: NumberKey) =>
+  minFn(hotels, h => h[key])?.[key];
 
-export const findMaxValueInListByKey = (hotels: Hotel[], key: FilterableKey) =>
-  maxFn(hotels, h => +h[key])?.[key];
+export const findMaxValueInListByKey = (hotels: Hotel[], key: NumberKey) =>
+  maxFn(hotels, h => h[key])?.[key];
 
 const filterOutInactiveFilter =
   (hotels: Hotel[]) =>
