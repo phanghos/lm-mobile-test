@@ -15,9 +15,9 @@ const createFilterFunction =
   <T extends FilterType>() =>
   (value: T['value']) => ({ value });
 
-export const textFilter = createFilterFunction<TextFilter>();
-export const numberFilter = createFilterFunction<NumberFilter>();
-export const rangeFilter = createFilterFunction<RangeFilter>();
+export const createTextFilter = createFilterFunction<TextFilter>();
+export const createNumberFilter = createFilterFunction<NumberFilter>();
+export const createRangeFilter = createFilterFunction<RangeFilter>();
 
 export const filterHotel =
   (hotel: Hotel) =>
@@ -38,7 +38,7 @@ export const filterHotel =
     return false;
   };
 
-const filterOutInactiveFilters = ([_, val]: FilterEntry): boolean => {
+const filterOutInactiveFilter = ([_, val]: FilterEntry): boolean => {
   const value = val.value;
 
   if (isString(value)) return !!value.trim();
@@ -47,9 +47,9 @@ const filterOutInactiveFilters = ([_, val]: FilterEntry): boolean => {
   return false;
 };
 
-export const getNewFilteredConfig = (filters: FilterConfig): FilterConfig =>
+export const getActiveFiltersConfig = (filters: FilterConfig): FilterConfig =>
   (Object.entries(filters) as FilterEntry[])
-    .filter(filterOutInactiveFilters)
+    .filter(filterOutInactiveFilter)
     .reduce<FilterConfig>((acc, [key, val]) => ({ ...acc, [key]: val }), {});
 
 type FilterKeyValueTypeMap = {

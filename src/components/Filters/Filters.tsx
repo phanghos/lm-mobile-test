@@ -12,9 +12,9 @@ import useAppStore from 'store';
 import {
   areFilterConfigsEqual,
   getFilterValue,
-  getNewFilteredConfig,
-  numberFilter,
-  textFilter,
+  getActiveFiltersConfig,
+  createNumberFilter,
+  createTextFilter,
 } from 'utils/filters';
 import useFilterHotels from 'hooks/useFilterHotels';
 import HotelStars from 'components/HotelStars/HotelStars';
@@ -34,7 +34,7 @@ const Filters = () => {
   const [stars, setStars] = useState(getFilterValue('stars', filters) || 0);
 
   const localFiltersFiltered = useMemo(
-    () => getNewFilteredConfig(localFilters),
+    () => getActiveFiltersConfig(localFilters),
     [localFilters],
   );
 
@@ -78,8 +78,8 @@ const Filters = () => {
 
   useEffect(() => {
     setLocalFilters({
-      name: textFilter(name),
-      stars: numberFilter(stars),
+      name: createTextFilter(name),
+      stars: createNumberFilter(stars),
     });
   }, [name, stars]);
 
