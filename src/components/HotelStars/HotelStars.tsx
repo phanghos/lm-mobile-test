@@ -31,6 +31,6 @@ const HotelStars = ({ count, onStarPress }: HotelStarsProps) => (
 export default HotelStars;
 
 const styles = StyleSheet.create({
-  container: { flexDirection: 'row' },
+  container: { flexDirection: 'row', marginRight: 8 },
   star: { top: 5, marginRight: 8 },
 });

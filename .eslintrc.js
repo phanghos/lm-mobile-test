@@ -27,6 +27,7 @@ module.exports = {
   },
   plugins: [],
   rules: {
+    curly: 0,
     'no-empty': 1,
     'no-empty-function': 0,
     '@typescript-eslint/no-empty-function': 1,

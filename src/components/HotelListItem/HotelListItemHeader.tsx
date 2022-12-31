@@ -9,10 +9,10 @@ import {
 } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import type { Hotel } from 'types';
-import { Colors } from 'colors';
 import { formatAddress } from 'utils/formatters';
 import HotelStars from 'components/HotelStars/HotelStars';
 import HotelImage from './HotelImage';
+import HotelRating from './HotelRating/HotelRating';
 
 type HotelListItemHeaderProps = {
   title: string;
@@ -59,9 +59,7 @@ const HotelListItemHeader = ({
       <Text style={styles.hotelAddress}>{formatAddress(location)}</Text>
       <View style={styles.starsAndRatingContainer}>
         <HotelStars count={stars} />
-        <View style={styles.userRatingContainer}>
-          <Text style={styles.userRating}>{rating}</Text>
-        </View>
+        <HotelRating rating={rating} />
       </View>
       <Carousel
         data={gallery}
@@ -88,15 +86,6 @@ const styles = StyleSheet.create({
   hotelName: { fontSize: 18, fontWeight: '700', marginBottom: 4 },
   hotelAddress: { fontStyle: 'italic', marginBottom: 8 },
   starsAndRatingContainer: { flexDirection: 'row', marginBottom: 8 },
-  userRatingContainer: {
-    padding: 8,
-    borderRadius: 8,
-    backgroundColor: Colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 8,
-  },
-  userRating: { color: 'white', fontWeight: '600' },
   paginationDotContainer: { height: 0 },
   paginationDotStyle: { width: 10, height: 10, borderRadius: 5 },
 });

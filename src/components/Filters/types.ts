@@ -1,12 +1,17 @@
 import type { Hotel } from 'types';
 
-export type FilterableKey = keyof Pick<Hotel, 'name' | 'stars'>;
+export type FilterableKey = keyof Pick<
+  Hotel,
+  'name' | 'stars' | 'userRating' | 'price'
+>;
 
-type FilterValue<T extends string | number | [number, number]> = { value: T };
+type FilterValue<T extends string | number | RangeFilterType> = { value: T };
+
+export type RangeFilterType = [number, number];
 
 export type TextFilter = FilterValue<string>;
 export type NumberFilter = FilterValue<number>;
-export type RangeFilter = FilterValue<[number, number]>;
+export type RangeFilter = FilterValue<RangeFilterType>;
 
 export type FilterType = TextFilter | NumberFilter | RangeFilter;
 

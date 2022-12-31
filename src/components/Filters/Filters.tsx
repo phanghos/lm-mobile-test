@@ -15,11 +15,20 @@ import {
   getActiveFiltersConfig,
   createNumberFilter,
   createTextFilter,
+  createRangeFilter,
+  findMinValueInListByKey,
+  findMaxValueInListByKey,
 } from 'utils/filters';
 import useFilterHotels from 'hooks/useFilterHotels';
 import HotelStars from 'components/HotelStars/HotelStars';
 import Button from 'components/Button/Button';
 import FilterItem from './FilterItem';
+import HotelRatingFilter from './HotelRatingFilter';
+import { RangeFilterType } from './types';
+
+const MIN_USER_RATING = 0;
+const MAX_USER_RATING = 10;
+const INITIAL_USER_RATING: RangeFilterType = [MIN_USER_RATING, MAX_USER_RATING];
 
 const Filters = () => {
   const { goBack, setOptions } = useNavigation();
@@ -29,13 +38,32 @@ const Filters = () => {
   const setFilters = useAppStore(state => state.setFilters);
   const hotels = useAppStore(state => state.hotels);
 
+  const minPrice = useMemo(
+    () => (findMinValueInListByKey(hotels, 'price') as number) ?? 0,
+    [hotels],
+  );
+  const maxPrice = useMemo(
+    () => (findMaxValueInListByKey(hotels, 'price') as number) ?? 0,
+    [hotels],
+  );
+  const initialPriceFilter: RangeFilterType = useMemo(
+    () => [minPrice, maxPrice],
+    [minPrice, maxPrice],
+  );
+
   const [localFilters, setLocalFilters] = useState(filters);
   const [name, setName] = useState(getFilterValue('name', filters) || '');
   const [stars, setStars] = useState(getFilterValue('stars', filters) || 0);
+  const [userRating, setUserRating] = useState(
+    getFilterValue('userRating', filters) || INITIAL_USER_RATING,
+  );
+  const [price, setPrice] = useState(
+    getFilterValue('price', filters) || initialPriceFilter,
+  );
 
   const localFiltersFiltered = useMemo(
-    () => getActiveFiltersConfig(localFilters),
-    [localFilters],
+    () => getActiveFiltersConfig(localFilters, hotels),
+    [localFilters, hotels],
   );
 
   const areOldAndNewFiltersEqual = useMemo(
@@ -55,10 +83,19 @@ const Filters = () => {
 
   const onResetStarFilter = () => setStars(0);
 
+  const onResetRatingFilter = () => setUserRating(INITIAL_USER_RATING);
+
+  const onResetPriceFilter = useCallback(
+    () => setPrice(initialPriceFilter),
+    [initialPriceFilter],
+  );
+
   const onResetAllFilters = useCallback(() => {
     onResetHotelNameFilter();
     onResetStarFilter();
-  }, []);
+    onResetRatingFilter();
+    onResetPriceFilter();
+  }, [onResetPriceFilter]);
 
   useEffect(() => {
     setOptions({
@@ -80,8 +117,10 @@ const Filters = () => {
     setLocalFilters({
       name: createTextFilter(name),
       stars: createNumberFilter(stars),
+      userRating: createRangeFilter(userRating),
+      price: createRangeFilter(price),
     });
-  }, [name, stars]);
+  }, [name, stars, userRating, price]);
 
   return (
     <>
@@ -94,10 +133,30 @@ const Filters = () => {
             style={styles.textInput}
           />
         </FilterItem>
+
         <FilterItem title="Stars" canReset onResetPress={onResetStarFilter}>
           <HotelStars
             count={getFilterValue('stars', localFilters) || 0}
             onStarPress={setStars}
+          />
+        </FilterItem>
+
+        <FilterItem title="Rating" canReset onResetPress={onResetRatingFilter}>
+          <HotelRatingFilter
+            values={userRating}
+            min={MIN_USER_RATING}
+            max={MAX_USER_RATING}
+            step={0.1}
+            onValuesChange={setUserRating}
+          />
+        </FilterItem>
+
+        <FilterItem title="Price" canReset onResetPress={onResetPriceFilter}>
+          <HotelRatingFilter
+            values={price}
+            min={minPrice}
+            max={maxPrice}
+            onValuesChange={setPrice}
           />
         </FilterItem>
       </View>

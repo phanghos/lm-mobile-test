@@ -1,5 +1,10 @@
-/* eslint-disable curly */
-import { isString, isNumber, isObject } from 'radash';
+import {
+  isString,
+  isNumber,
+  isArray,
+  min as minFn,
+  max as maxFn,
+} from 'radash';
 import type {
   FilterableKey,
   FilterConfig,
@@ -7,9 +12,17 @@ import type {
   FilterType,
   NumberFilter,
   RangeFilter,
+  RangeFilterType,
   TextFilter,
 } from 'components/Filters/types';
 import type { Hotel } from 'types';
+
+type FilterKeyValueTypeMap = {
+  name: string;
+  stars: number;
+  userRating: RangeFilterType;
+  price: RangeFilterType;
+};
 
 const createFilterFunction =
   <T extends FilterType>() =>
@@ -30,7 +43,7 @@ export const filterHotel =
       return value.toLocaleLowerCase().includes(filter.value.toLowerCase());
     } else if (isNumber(value) && isNumber(filter.value)) {
       return value === filter.value;
-    } else if (isNumber(value) && isObject(filter.value)) {
+    } else if (isNumber(value) && isArray(filter.value)) {
       const [min, max] = filter.value;
       return value >= min && value <= max;
     }
@@ -38,25 +51,45 @@ export const filterHotel =
     return false;
   };
 
-const filterOutInactiveFilter = ([_, val]: FilterEntry): boolean => {
-  const value = val.value;
+export const findMinValueInListByKey = (hotels: Hotel[], key: FilterableKey) =>
+  minFn(hotels, h => +h[key])?.[key];
 
-  if (isString(value)) return !!value.trim();
-  else if (isNumber(value)) return !!value;
+export const findMaxValueInListByKey = (hotels: Hotel[], key: FilterableKey) =>
+  maxFn(hotels, h => +h[key])?.[key];
 
-  return false;
-};
+const filterOutInactiveFilter =
+  (hotels: Hotel[]) =>
+  ([key, val]: FilterEntry): boolean => {
+    const value = val.value;
+    if (isString(value)) return !!value.trim();
+    else if (isNumber(value)) return !!value;
+    else if (isArray(value)) {
+      const [min, max] = value;
 
-export const getActiveFiltersConfig = (filters: FilterConfig): FilterConfig =>
+      if (key === 'userRating') {
+        return !(min === 0 && max === 10);
+      } else if (key === 'price') {
+        return !(
+          min ===
+          (findMinValueInListByKey(hotels, 'price') ??
+            (0 && max === findMaxValueInListByKey(hotels, 'price')) ??
+            0)
+        );
+      }
+
+      return false;
+    }
+
+    return false;
+  };
+
+export const getActiveFiltersConfig = (
+  filters: FilterConfig,
+  hotels: Hotel[],
+): FilterConfig =>
   (Object.entries(filters) as FilterEntry[])
-    .filter(filterOutInactiveFilter)
+    .filter(filterOutInactiveFilter(hotels))
     .reduce<FilterConfig>((acc, [key, val]) => ({ ...acc, [key]: val }), {});
-
-type FilterKeyValueTypeMap = {
-  name: string;
-  stars: number;
-  price: [number, number];
-};
 
 export const getFilterValue = <K extends FilterableKey>(
   name: K,
@@ -64,7 +97,7 @@ export const getFilterValue = <K extends FilterableKey>(
 ) => filters[name]?.value as FilterKeyValueTypeMap[K];
 
 export const areFilterValuesEqual = (f1: FilterType, f2: FilterType) =>
-  typeof f1 === typeof f2 && f1.value === f2.value;
+  typeof f1 === typeof f2 && `${f1.value}` === `${f2.value}`;
 
 export const areFilterConfigsEqual = (f1: FilterConfig, f2: FilterConfig) => {
   const f1Entries = Object.entries(f1) as FilterEntry[];
