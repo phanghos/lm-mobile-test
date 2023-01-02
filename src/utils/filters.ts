@@ -68,10 +68,8 @@ const filterOutInactiveFilter =
         return !(min === 0 && max === 10);
       } else if (key === 'price') {
         return !(
-          min ===
-          (findMinValueInListByKey(hotels, 'price') ??
-            (0 && max === findMaxValueInListByKey(hotels, 'price')) ??
-            0)
+          min === (findMinValueInListByKey(hotels, 'price') ?? 0) &&
+          (max === findMaxValueInListByKey(hotels, 'price') ?? 0)
         );
       }
 
@@ -92,7 +90,7 @@ export const getActiveFiltersConfig = (
 export const getFilterValue = <K extends FilterableKey>(
   name: K,
   filters: FilterConfig,
-) => filters[name]?.value as FilterKeyValueTypeMap[K];
+) => filters[name]?.value as FilterKeyValueTypeMap[K] | undefined;
 
 export const areFilterValuesEqual = (f1: FilterType, f2: FilterType) =>
   typeof f1 === typeof f2 && `${f1.value}` === `${f2.value}`;
