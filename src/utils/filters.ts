@@ -17,19 +17,6 @@ import type {
 } from 'components/Filters/types';
 import type { Hotel } from 'types';
 
-type PickByType<T, U> = {
-  [P in keyof T as T[P] extends U ? P : never]: T[P];
-};
-
-type FilterKeyValueTypeMap = {
-  name: string;
-  stars: number;
-  userRating: RangeFilterType;
-  price: RangeFilterType;
-};
-
-type NumberKey = keyof PickByType<Pick<Hotel, FilterableKey>, number>;
-
 const createFilterFunction =
   <T extends FilterType>() =>
   (value: T['value']) => ({ value });
