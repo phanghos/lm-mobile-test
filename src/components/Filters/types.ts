@@ -4,7 +4,7 @@ type PickByType<T, U> = {
   [P in keyof T as T[P] extends U ? P : never]: T[P];
 };
 
-type FilterKeyValueTypeMap = {
+export type FilterKeyValueTypeMap = {
   name: string;
   stars: number;
   userRating: RangeFilterType;
@@ -13,7 +13,10 @@ type FilterKeyValueTypeMap = {
 
 export type FilterableKey = keyof Pick<Hotel, keyof FilterKeyValueTypeMap>;
 
-type NumericFilterKey = keyof PickByType<Pick<Hotel, FilterableKey>, number>;
+export type NumericFilterKey = keyof PickByType<
+  Pick<Hotel, FilterableKey>,
+  number
+>;
 
 type FilterValue<T extends string | number | RangeFilterType> = { value: T };
 

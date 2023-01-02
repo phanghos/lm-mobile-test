@@ -9,10 +9,11 @@ import type {
   FilterableKey,
   FilterConfig,
   FilterEntry,
+  FilterKeyValueTypeMap,
   FilterType,
   NumberFilter,
+  NumericFilterKey,
   RangeFilter,
-  RangeFilterType,
   TextFilter,
 } from 'components/Filters/types';
 import type { Hotel } from 'types';
@@ -44,11 +45,15 @@ export const filterHotel =
     return false;
   };
 
-export const findMinValueInListByKey = (hotels: Hotel[], key: NumberKey) =>
-  minFn(hotels, h => h[key])?.[key];
+export const findMinValueInListByKey = (
+  hotels: Hotel[],
+  key: NumericFilterKey,
+) => minFn(hotels, h => h[key])?.[key];
 
-export const findMaxValueInListByKey = (hotels: Hotel[], key: NumberKey) =>
-  maxFn(hotels, h => h[key])?.[key];
+export const findMaxValueInListByKey = (
+  hotels: Hotel[],
+  key: NumericFilterKey,
+) => maxFn(hotels, h => h[key])?.[key];
 
 const filterOutInactiveFilter =
   (hotels: Hotel[]) =>
