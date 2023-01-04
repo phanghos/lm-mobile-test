@@ -13,11 +13,9 @@ import {
   areFilterConfigsEqual,
   getFilterValue,
   getActiveFiltersConfig,
-  createNumberFilter,
-  createTextFilter,
-  createRangeFilter,
   findMinValueInListByKey,
   findMaxValueInListByKey,
+  createFilters,
 } from 'utils/filters';
 import useFilterHotels from 'hooks/useFilterHotels';
 import HotelStars from 'components/HotelStars/HotelStars';
@@ -114,12 +112,7 @@ const Filters = () => {
   }, [filters]);
 
   useEffect(() => {
-    setLocalFilters({
-      name: createTextFilter(name),
-      stars: createNumberFilter(stars),
-      userRating: createRangeFilter(userRating),
-      price: createRangeFilter(price),
-    });
+    setLocalFilters(createFilters({ name, stars, userRating, price }));
   }, [name, stars, userRating, price]);
 
   return (

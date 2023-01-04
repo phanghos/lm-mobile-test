@@ -4,6 +4,7 @@ import {
   isArray,
   min as minFn,
   max as maxFn,
+  mapValues,
 } from 'radash';
 import type {
   FilterableKey,
@@ -11,6 +12,8 @@ import type {
   FilterEntry,
   FilterKeyValueTypeMap,
   FilterType,
+  FilterValue,
+  FilterValueType,
   NumberFilter,
   NumericFilterKey,
   RangeFilter,
@@ -20,11 +23,21 @@ import type { Hotel } from 'types';
 
 const createFilterFunction =
   <T extends FilterType>() =>
-  (value: T['value']) => ({ value });
+  (value: T['value']): FilterValue<T['value']> => ({ value });
 
-export const createTextFilter = createFilterFunction<TextFilter>();
-export const createNumberFilter = createFilterFunction<NumberFilter>();
-export const createRangeFilter = createFilterFunction<RangeFilter>();
+const createTextFilter = createFilterFunction<TextFilter>();
+const createNumberFilter = createFilterFunction<NumberFilter>();
+const createRangeFilter = createFilterFunction<RangeFilter>();
+
+const createFilterByType = (value: FilterValueType) => {
+  if (isString(value)) return createTextFilter(value);
+  else if (isNumber(value)) return createNumberFilter(value);
+  else return createRangeFilter(value);
+};
+
+export const createFilters = (
+  filters: Record<FilterableKey, FilterValueType>,
+): FilterConfig => mapValues(filters, createFilterByType);
 
 export const filterHotel =
   (hotel: Hotel) =>

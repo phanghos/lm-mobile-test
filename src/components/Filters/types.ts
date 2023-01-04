@@ -18,7 +18,10 @@ export type NumericFilterKey = keyof PickByType<
   number
 >;
 
-type FilterValue<T extends string | number | RangeFilterType> = { value: T };
+export type FilterValueType =
+  FilterKeyValueTypeMap[keyof FilterKeyValueTypeMap];
+
+export type FilterValue<T extends FilterValueType> = { value: T };
 
 export type RangeFilterType = [number, number];
 
