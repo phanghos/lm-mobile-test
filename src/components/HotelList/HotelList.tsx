@@ -6,8 +6,6 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import type { StackScreenProps } from '@react-navigation/stack';
-import type { RootStackParamList } from 'navigation/types';
 import type { Hotel } from 'types';
 import { Colors } from 'colors';
 import useFetchHotels from 'hooks/useFetchHotels';
@@ -16,8 +14,7 @@ import HotelListItem from 'components/HotelListItem/HotelListItem';
 import HotelListItemPlaceholder from 'components/HotelListItem/HotelListItemPlaceholder';
 import EmptyPlaceholder from 'components/EmptyPlaceholder/EmptyPlaceholder';
 import ErrorPlaceholder from 'components/ErrorPlaceholder/ErrorPlaceholder';
-
-type ScreenProps = StackScreenProps<RootStackParamList, 'HOTEL_LIST_SCREEN'>;
+import useAppStore from 'store';
 
 const renderItem: ListRenderItem<Hotel> = ({ item }) => (
   <HotelListItem {...item} />
@@ -31,7 +28,8 @@ const scrollInsets: Insets = { top: 16, bottom: -16 };
 
 const HotelList = () => {
   const { isLoading, hotels, hasError, refetch } = useFetchHotels();
-  const filteredHotels = useFilterHotels(hotels);
+  const filters = useAppStore(state => state.filters);
+  const filteredHotels = useFilterHotels(hotels, filters);
 
   return (
     <View style={styles.container}>
