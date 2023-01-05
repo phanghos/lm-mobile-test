@@ -3,9 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import HotelRating from 'components/HotelListItem/HotelRating/HotelRating';
 import { Colors } from 'colors';
-import { RangeFilterType } from './types';
+import { RangeFilterType } from './Filters/types';
 
-type HotelRatingFilterProps = {
+type SliderProps = {
   values: RangeFilterType;
   min: number;
   max: number;
@@ -13,13 +13,13 @@ type HotelRatingFilterProps = {
   onValuesChange: (values: RangeFilterType) => void;
 };
 
-const HotelRatingFilter = ({
+const Slider = ({
   values,
   min,
   max,
   step = 1,
   onValuesChange,
-}: HotelRatingFilterProps) => {
+}: SliderProps) => {
   const [minValue, maxValue] = values;
 
   return (
@@ -49,7 +49,7 @@ const HotelRatingFilter = ({
   );
 };
 
-export default HotelRatingFilter;
+export default Slider;
 
 const styles = StyleSheet.create({
   container: {},

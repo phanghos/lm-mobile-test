@@ -23,7 +23,7 @@ import useFilterHotels from 'hooks/useFilterHotels';
 import HotelStars from 'components/HotelStars/HotelStars';
 import Button from 'components/Button/Button';
 import FilterItem from './FilterItem';
-import HotelRatingFilter from './HotelRatingFilter';
+import Slider from '../Slider';
 import { RangeFilterType } from './types';
 
 const MIN_USER_RATING = 0;
@@ -142,7 +142,7 @@ const Filters = () => {
         </FilterItem>
 
         <FilterItem title="Rating" canReset onResetPress={onResetRatingFilter}>
-          <HotelRatingFilter
+          <Slider
             values={userRating}
             min={MIN_USER_RATING}
             max={MAX_USER_RATING}
@@ -152,7 +152,7 @@ const Filters = () => {
         </FilterItem>
 
         <FilterItem title="Price" canReset onResetPress={onResetPriceFilter}>
-          <HotelRatingFilter
+          <Slider
             values={price}
             min={minPrice}
             max={maxPrice}
