@@ -1,11 +1,12 @@
 import {
-  isString,
-  isNumber,
   isArray,
-  min as minFn,
-  max as maxFn,
+  isNumber,
+  isString,
   mapValues,
+  max as maxFn,
+  min as minFn,
 } from 'radash';
+
 import type {
   FilterableKey,
   FilterConfig,
@@ -19,6 +20,7 @@ import type {
   RangeFilter,
   TextFilter,
 } from 'components/Filters/types';
+
 import type { Hotel } from 'types';
 
 const createFilterFunction =
@@ -38,6 +40,11 @@ const createFilterByType = (value: FilterValueType) => {
 export const createFilters = (
   filters: Record<FilterableKey, FilterValueType>,
 ): FilterConfig => mapValues(filters, createFilterByType);
+
+export const filterHotels = (hotels: Hotel[], filters: FilterConfig) =>
+  hotels.filter(hotel =>
+    (Object.entries(filters) as FilterEntry[]).every(filterHotel(hotel)),
+  );
 
 export const filterHotel =
   (hotel: Hotel) =>

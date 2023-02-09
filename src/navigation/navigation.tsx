@@ -7,7 +7,7 @@ import { HeaderBackButton } from '@react-navigation/elements';
 import type { RootStackParamList } from './types';
 import { Screen } from 'screens';
 import { Colors } from 'colors';
-import HotelList from 'components/HotelList/HotelList';
+import HotelListScreen from 'screens/HotelListScreen/HotelListScreen';
 import HotelDetailsScreen from 'screens/HotelDetailsScreen/HotelDetailsScreen';
 import FilterScreen from 'screens/FilterScreen/FilterScreen';
 import HeaderFilterButton from 'components/HeaderFilterButton/HeaderFilterButton';
@@ -25,7 +25,7 @@ const AppNavigator = () => (
     })}>
     <AppStack.Screen
       name={Screen.HotelList}
-      component={HotelList}
+      component={HotelListScreen}
       options={{
         headerTitle: 'Hotel List',
         headerRightContainerStyle: { width: '100%' },

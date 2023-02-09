@@ -6,23 +6,26 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Button from 'components/Button/Button';
+import HotelStars from 'components/HotelStars/HotelStars';
+import useFilterHotels from 'hooks/useFilterHotels';
 import useAppStore from 'store';
 import {
   areFilterConfigsEqual,
-  getFilterValue,
-  getActiveFiltersConfig,
-  findMinValueInListByKey,
-  findMaxValueInListByKey,
   createFilters,
+  findMaxValueInListByKey,
+  findMinValueInListByKey,
+  getActiveFiltersConfig,
+  getFilterValue,
 } from 'utils/filters';
-import useFilterHotels from 'hooks/useFilterHotels';
-import HotelStars from 'components/HotelStars/HotelStars';
-import Button from 'components/Button/Button';
-import FilterItem from './FilterItem';
+
+import { useNavigation } from '@react-navigation/native';
+
 import Slider from '../Slider';
-import { RangeFilterType } from './types';
+import FilterItem from './FilterItem';
+
+import type { RangeFilterType } from './types';
 
 const MIN_USER_RATING = 0;
 const MAX_USER_RATING = 10;

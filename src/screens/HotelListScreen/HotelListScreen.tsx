@@ -26,7 +26,7 @@ const Separator = () => <View style={styles.separator} />;
 
 const scrollInsets: Insets = { top: 16, bottom: -16 };
 
-const HotelList = () => {
+const HotelListScreen = () => {
   const { isLoading, hotels, hasError, refetch } = useFetchHotels();
   const filters = useAppStore(state => state.filters);
   const filteredHotels = useFilterHotels(hotels, filters);
@@ -52,7 +52,7 @@ const HotelList = () => {
   );
 };
 
-export default HotelList;
+export default HotelListScreen;
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.screenBackground },

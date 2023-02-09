@@ -1,15 +1,10 @@
 import { useMemo } from 'react';
+import { filterHotels } from 'utils/filters';
+
 import type { Hotel } from 'types';
-import type { FilterConfig, FilterEntry } from 'components/Filters/types';
-import { filterHotel } from 'utils/filters';
+import type { FilterConfig } from 'components/Filters/types';
 
 const useFilterHotels = (hotels: Hotel[], filters: FilterConfig) =>
-  useMemo(
-    () =>
-      hotels.filter(hotel =>
-        (Object.entries(filters) as FilterEntry[]).every(filterHotel(hotel)),
-      ),
-    [hotels, filters],
-  );
+  useMemo(() => filterHotels(hotels, filters), [hotels, filters]);
 
 export default useFilterHotels;

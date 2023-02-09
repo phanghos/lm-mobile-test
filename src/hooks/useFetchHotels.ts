@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import useAppStore from 'store';
+
 import type { HotelResponse } from 'types';
 
 const useFetchHotels = () => {

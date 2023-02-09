@@ -1,4 +1,5 @@
 import create from 'zustand';
+
 import type { Hotel } from 'types';
 import type { FilterConfig } from 'components/Filters/types';
 

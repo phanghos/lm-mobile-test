@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from 'colors';
 
@@ -14,6 +14,7 @@ type WithResetProps = {
 
 type FilterItemProps = {
   title: string;
+  children: React.ReactNode;
 } & (WithoutResetProps | WithResetProps);
 
 const FilterItem = ({
@@ -21,7 +22,7 @@ const FilterItem = ({
   canReset,
   onResetPress,
   children,
-}: PropsWithChildren<FilterItemProps>) => (
+}: FilterItemProps) => (
   <View style={styles.container}>
     <View style={styles.titleContainer}>
       <Text style={styles.title}>{title}</Text>

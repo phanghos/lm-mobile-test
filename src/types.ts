@@ -1,3 +1,5 @@
+type CheckHours = { from: string; to: string };
+
 export type Hotel = {
   id: number;
   name: string;
@@ -8,12 +10,9 @@ export type Hotel = {
     longitude: number;
   };
   stars: number;
-  checkIn: { from: string; to: string };
-  checkOut: { from: string; to: string };
-  contact: {
-    phoneNumber: string;
-    email: string;
-  };
+  checkIn: CheckHours;
+  checkOut: CheckHours;
+  contact: { phoneNumber: string; email: string };
   gallery: string[];
   userRating: number;
   price: number;
